@@ -15,7 +15,7 @@ def listdir_fullpath(root_dir, file_extension=None, exclude_dir = True):
 
     if len(a) > 0:
         if exclude_dir:
-            files_to_keep = np.bitwise_not(map(os.path.isdir, a))
+            files_to_keep = np.bitwise_not(list(map(os.path.isdir, a)))
             a = np.array(a)[files_to_keep]
             a = a.tolist()
 
