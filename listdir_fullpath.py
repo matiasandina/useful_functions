@@ -4,19 +4,19 @@
 import os
 import numpy as np
 
-# We will use this helper function to get the full path of the video files
-def listdir_fullpath(root_dir, file_extension=None, exclude_dir = True):
+def listdir_fullpath(root_dir, file_pattern=None, file_extension=None, exclude_dir = True):
 
     # Get everything
     if file_extension is None:
-        a = [os.path.join(root_dir, files) for files in os.listdir(root_dir)]
+        file_list  = [os.path.join(root_dir, files) for files in os.listdir(root_dir)]
     else:
-        a = [os.path.join(root_dir, files) for files in os.listdir(root_dir) if files.endswith(file_extension)]
-
-    if len(a) > 0:
+        file_list = [os.path.join(root_dir, files) for files in os.listdir(root_dir) if files.endswith(file_extension)]
+    if file_pattern is not None:
+            file_list = [file for file in file_list if file_pattern in file]
+    if len(file_list) > 0:
         if exclude_dir:
-            files_to_keep = np.bitwise_not(list(map(os.path.isdir, a)))
-            a = np.array(a)[files_to_keep]
-            a = a.tolist()
+            files_to_keep = np.bitwise_not(list(map(os.path.isdir, file_list)))
+            file_list = np.array(file_list)[files_to_keep]
+            file_list = file_list.tolist()
 
-    return sorted(a)
+    return sorted(file_list)
